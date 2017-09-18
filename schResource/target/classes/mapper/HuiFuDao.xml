@@ -5,14 +5,7 @@
 <mapper namespace="sch.com.dao.wymm.HuiFuDao">	
 	<!-- 已下架表格查询 -->
 	<select id="HuiFu" resultType="HashMap" parameterType="HashMap">
-		select * from (select a.* ,rownum rn from (select * from view_huifu where 1=1 
-		<if test="uploadDate!=null and uploadDate!=''">
-			and upload_date = #{uploadDate}
-		</if>
-		<if test="resourceName!=null and resourceName!=''">
-			and resource_name like '%${resourceName}%'
-		</if>
-		order by soldout_date desc) a where rownum &lt; =#{bigPage} order by soldout_date desc) where rn>#{smallPage} order by soldout_date desc
+		select * from (select a.* ,rownum rn from (select * from view_huifu order by soldout_date desc) a where rownum &lt; =#{bigPage} order by soldout_date desc) where rn>#{smallPage} order by soldout_date desc
 	</select> 
 	
 	<!-- 查询已下架需要恢复的资源total -->

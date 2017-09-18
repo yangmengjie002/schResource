@@ -18,9 +18,8 @@
 </head>
 <body>
 	
-	输入资源名称：<input id="resourceName" class="easyui-validatebox"/>  
-	输入日期：<input type="text" id="uploadDate" class="easyui-datebox"/>  
-	<a id="releaseSeach" class="easyui-linkbutton" data-options="iconCls : 'icon-search'">搜索</a> 	
+	<!-- <input type="button" id="fabu" class="btn btn-default btn-success" value="发布资源" />	 -->
+	
 	
 		
 	<table id="dg">
@@ -41,14 +40,14 @@
 	        {field:'INSTITUTE_NAME',title:'文件所属院',width:120},
 	        {field:'UPLOAD_DATE',title:'上传时间',width:120},
 	        {field:'CHECK_DATA',title:'审批时间',width:120} 
-	    ]],	    
+	    ]],
+	    fit:true,
 	    fitColumns:true,
 		striped:true,
 		pagination:true,
 		rownumbers:true,
 		pageSize:3,
-		pageList:[3,6,9],
-	//	fit:true,	
+		pageList:[3,6,9],		
 		toolbar:[{
 			text:"发布资源",
 			iconCls:'icon-ok',
@@ -83,12 +82,7 @@
 		}]
 	}); 
 	
-	$("#releaseSeach").click(function(){
-		data = {};
-		data["uploadDate"] = $("#uploadDate").val();
-		data["resourceName"] = $("#resourceName").val();
-		$('#dg').datagrid('load',data);
-	});
+
 	
 	</script>
 

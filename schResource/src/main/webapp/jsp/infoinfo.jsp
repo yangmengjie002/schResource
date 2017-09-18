@@ -651,6 +651,7 @@ $(function(){
 		prevPageText: "< 上一页",
 		nextPageText: "下一页 >",
 		callback: function(current) {
+			$("#current").text(current)
 			$.ajax({
 				url:"/schResource/wym/commentQuery.do",
 				data:{

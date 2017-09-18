@@ -13,11 +13,7 @@
 <title>已下架资源恢复操作</title>
 </head>
 <body>
-	
-	输入资源名称：<input id="resourceName" class="easyui-validatebox"/>  
-	输入下架日期：<input type="text" id=uploadDate class="easyui-datebox"/>  
-	<a id="huiFuSeach" class="easyui-linkbutton" data-options="iconCls : 'icon-search'">搜索</a> 
-	
+	<!-- <input type="button" id="end" class="btn btn-warning" value="恢复资源" />	 -->
 	
 	<table id="dg">
 		
@@ -79,14 +75,6 @@
 		}]
 	}); 
 	
-	
-	//搜索按钮点击事件
-	$("#huiFuSeach").click(function(){
-		var data = {};
-		data["resourceName"] = $("#resourceName").val();       //封装资源名称
-		data["uploadDate"] = $("#uploadDate").val();           //封装下架时间
-		$("#dg").datagrid('load',data);                       //传入后台并更新数据
-	});
  
 	 
 	 </script>

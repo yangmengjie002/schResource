@@ -5,15 +5,9 @@
 <mapper namespace="sch.com.dao.wymm.CheckQueryDao">	
 	<!-- 审核页面表格查询 -->
 	<select id="checkQuery" resultType="HashMap" parameterType="HashMap">
-		select * from (select a.* ,rownum rn from (select * from view_check where 1=1
-		<if test="uploadData!=null and uploadData!=''">
-			and upload_date=#{uploadData}
-		</if>
-		<if test="resouceName!=null and resouceName!=''">
-			and resource_name like '%${resouceName}%'
-		</if>
-		order by upload_date desc) a where rownum &lt; =#{bigPage} order by upload_date desc) where rn>#{smallPage} order by upload_date desc
+		select * from (select a.* ,rownum rn from (select * from view_check order by upload_date desc) a where rownum &lt; =#{bigPage} order by upload_date desc) where rn>#{smallPage} order by upload_date desc
 	</select> 
+	
 	<!-- 获得审核total -->
 	<select id="checkTotalQuery" resultType="Integer">
 		select count(*) from view_check

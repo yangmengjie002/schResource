@@ -5,14 +5,7 @@
 <mapper namespace="sch.com.dao.wymm.ReleaseResourceDao">
 	<!-- 获得资源发布列表 -->	
 	<select id="ReleaseResourceQuery" resultType="HashMap" parameterType="HashMap">
-		select * from (select a.* ,rownum rn from (select * from view_release where 1=1 
-		<if test="uploadDate!=null and uploadDate!=''">
-			and upload_date=#{uploadDate}
-		</if>
-		<if test="resourceName!=null and resourceName!=''">
-			and resource_name like '%${resourceName}%'
-		</if> 
-		order by upload_date desc) a where rownum &lt;=#{bigPage} order by upload_date desc) where rn>#{smallPage}order by upload_date desc 
+		select * from (select a.* ,rownum rn from (select * from view_release order by upload_date desc) a where rownum &lt;=#{bigPage} order by upload_date desc) where rn>#{smallPage} order by upload_date desc
 	</select> 
 	
 	<!-- 获得资源发布列表total -->

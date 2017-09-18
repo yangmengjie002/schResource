@@ -75,18 +75,37 @@
 				if(data.score.length<=10){
 					m2 = data.score.length;
 				}
-				for(var i=0;i<m1;i++){
-					str1 +="<li><a href='/schResource/wym/infoInfo/lan.do?id="+data.down[i].RESOURCE_ID+"'>";
-					str1 +="<span>"+data.down[i].RESOURCE_NAME+"</span>";
-					str1 +="<span style='float:right;'>"+data.down[i].DOWNSUM+"次</span>";
-					str1 +="</a></li>";
-				}
+				for(var i=0;i<m1;i++){ 
+					if(i<3){
+						
+						str1 +="<li class='top3'><em>"+(i+1)+"</em><a href='/schResource/wym/infoInfo/lan.do?id="+data.down[i].RESOURCE_ID+"'>";
+						str1 +="<span><font size=4px>"+data.down[i].RESOURCE_NAME+"</font></span></a>"; 
+						str1 +="<span style='float:right;'>"+data.down[i].DOWNSUM+"次</span>";
+						str1 +="<p><font size=1px>"+data.down[i].RESOURCE_INFO+"</font></p>";  
+						str1 +="</li>";   
+					}else if (i>3) {
+						str1 +="<li><em>"+(i+1)+"</em><a href='/schResource/wym/infoInfo/lan.do?id="+data.down[i].RESOURCE_ID+"'>";
+						str1 +="<span><font size=4px>"+data.down[i].RESOURCE_NAME+"</font></span></a>"; 
+						str1 +="<span style='float:right;'>"+data.down[i].DOWNSUM+"次</span>";
+						str1 +="<p><font size=1px>"+data.down[i].RESOURCE_INFO+"</font></p>";  
+						str1 +="</li>"; 
+					}
+					
+				} 
 				$("#down").append(str1);
 				for(var i=0;i<m2;i++){
-					str2 +="<li><a href='/schResource/wym/infoInfo/lan.do?id="+data.score[i].RESOURCE_ID+"'>";
-					str2 +="<span>"+data.score[i].RESOURCE_NAME+"</span>";
-					str2 +="<span style='float:right;'>"+data.score[i].SCOREORDER+"分</span>";
-					str2 +="</a></li>";
+					if(i<3){
+						str2 +="<li class='top3'><em>"+(i+1)+"</em><a href='/schResource/wym/infoInfo/lan.do?id="+data.score[i].RESOURCE_ID+"'>";
+						str2 +="<span><font size=4px>"+data.score[i].RESOURCE_NAME+"</font></span></a>";
+						str2 +="<span style='float:right;'>"+data.score[i].SCOREORDER+"分</span>";
+						str2 +="</li>";
+					}else if(i>3){
+						str2 +="<li><em>"+(i+1)+"</em><a href='/schResource/wym/infoInfo/lan.do?id="+data.score[i].RESOURCE_ID+"'>";
+						str2 +="<span><font size=4px>"+data.score[i].RESOURCE_NAME+"</font></span></a>";
+						str2 +="<span style='float:right;'>"+data.score[i].SCOREORDER+"分</span>";
+						str2 +="</li>";
+					}
+					
 				}
 				$("#score").append(str2);
 			}
@@ -117,7 +136,7 @@
 				$("#tishi").html(str);
 				$("#submit1").attr("disabled", true);
 			}
-		}
+		} 
 		
 	}
 </script>
@@ -130,9 +149,9 @@ body {
 }
 
 #informTb{
-	font-size: 22px;
+	font-size: 17px; 
 	font-weight: bold;
-	margin-bottom: 3px;
+	margin-bottom: 3px; 
 	color: #444;
 }
 #tails{
@@ -176,6 +195,47 @@ body {
 			text-decoration: none;
 			text-decoration: none !important;
 }
+/* 排行榜 Styles*/
+.rank_list { 
+	line-height: 24px;  
+	margin: auto;
+	padding-top: 5px;
+}
+
+.rank_list li {   
+	height: 55px; 
+	margin-bottom: 8px;     
+	padding-left: 35px; 
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+}
+
+.rank_list li.top3 em {
+	background: #FFE4B7;
+	border: 1px solid #FFBB8B;
+	color: #FF6800;
+}
+
+.rank_list em {
+	position: absolute;	
+	left: 0;  
+	top: 0;
+	width: 22px;
+	height: 22px;
+	border: 1px solid #B1E0F4; 
+	color: #6298CC;
+	font-style: normal; 
+	font-size: 15px; 
+	font-family: Arial; 
+	background: #E6F0FD;
+	text-align: center; 
+	line-height: 22px;   
+	overflow: hidden;  
+}
+  /* 排行榜END。。。。。*/
+
+
 
 /* Custom Styles */
 ul.nav-tabs {
@@ -217,7 +277,7 @@ ul.nav-tabs li:last-child a {
 #myTab{
 	width:100%;
 	float:right;
-}
+} 
 
 ul.nav-tabs.affix {
 	top: 25%;
@@ -253,7 +313,7 @@ ul.nav-tabs.affix {
 						<li><a href="/schResource/jsp/fileupload.jsp">资源上传</a></li>
 						<li><a href="#">资源排行</a></li>
 					</ul></li>
-			</ul>
+			</ul> 
 			<form class="navbar-form navbar-left">
 				<div class="form-group">
 					<input type="text" id="btnSelect" class="form-control" placeholder="资源">
@@ -354,10 +414,31 @@ ul.nav-tabs.affix {
 			href="#carousel-example-generic" data-slide="next">&rsaquo;</a>
 
 	</div>
-	<!-- 附加导航 -->
-
 	<div class="row">
-		<div class="col-xs-7">
+		<!-- 排行榜。。。。 -->
+		<div class="col-xs-6" style="margin-top:0px;font-size:16px;">
+		<h3>资源排行</h3> 
+			<ul id="myTab" class="nav nav-tabs">
+				<li class="active"><a href="#home" data-toggle="tab">下载排行
+				</a></li>
+				<li><a href="#ios" data-toggle="tab">评分排行</a></li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade in active" id="home">
+					<span>资源名</span><span style='float:right;'>下载次数</span>
+					<ol id="down" class="rank_list"></ol>
+				</div>  
+				<div class="tab-pane fade" id="ios">
+				<span>资源名</span><span style='float:right;'>评分</span>
+					<ol id="score" class="rank_list"></ol>
+				</div>
+			</div>
+			
+		</div>
+		<!-- 排行榜end。。。。 -->
+		<div class="col-xs-1">
+		</div>
+		<div class="col-xs-5">
 			<h3>
 				<span class="glyphicon-envelope">校园新闻</span><hr style="height:6px;border:none;border-top:6px groove skyblue;"/>
 			</h3>
@@ -369,25 +450,7 @@ ul.nav-tabs.affix {
 			</div>
 			<hr>
 		</div>
-		<div class="col-xs-5" style="margin-top:0px;font-size:16px;">
-		<h3>资源排行</h3>
-			<ul id="myTab" class="nav nav-tabs">
-				<li class="active"><a href="#home" data-toggle="tab">下载排行
-				</a></li>
-				<li><a href="#ios" data-toggle="tab">评分排行</a></li>
-			</ul>
-			<div id="myTabContent" class="tab-content">
-				<div class="tab-pane fade in active" id="home">
-					<span>资源名</span><span style='float:right;'>下载次数</span>
-					<ol id="down"></ol>
-				</div>
-				<div class="tab-pane fade" id="ios">
-				<span>资源名</span><span style='float:right;'>评分</span>
-					<ol id="score"></ol>
-				</div>
-			</div>
-			
-		</div>
+		
 		
 	</div>
 	</div>

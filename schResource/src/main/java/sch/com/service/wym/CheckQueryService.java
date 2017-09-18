@@ -3,11 +3,9 @@ package sch.com.service.wym;
 import java.util.HashMap;
 import java.util.List;
 
-import sch.com.entity.ResourceParam;
-
 public interface CheckQueryService {
 	//需要审核的数据列表
-	public HashMap<String,Object> checkQuery(Integer rows,Integer page,ResourceParam param);
+	public HashMap<String,Object> checkQuery(Integer rows,Integer page);
 	
 	//级联下拉系查询
 	public List<HashMap<String,Object>> checkMajQuery(String m);

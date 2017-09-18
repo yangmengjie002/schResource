@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sch.com.dao.wymm.CheckQueryDao;
-import sch.com.entity.ResourceParam;
 import sch.com.utils.DateUtils;
 
 
@@ -20,13 +19,11 @@ public class CheckQueryServiceImpl implements sch.com.service.wym.CheckQueryServ
 		
 	@Override
 	//需要审核的数据列表
-	public HashMap<String,Object> checkQuery(Integer rows,Integer page,ResourceParam rp) {
+	public HashMap<String,Object> checkQuery(Integer rows,Integer page) {
 		List<HashMap<String,Object>> check = new ArrayList<HashMap<String,Object>>();
 		HashMap<String,Object> param = new HashMap<String,Object>();
 		param.put("bigPage", rows*page);
 		param.put("smallPage", rows*(page-1));
-		param.put("uploadData", rp.getUploadDate());
-		param.put("resouceName", rp.getResourceName());
 		check = checkQueryDao.checkQuery(param);
 		Integer total = checkQueryDao.checkTotalQuery();
 		HashMap<String,Object> checkMap = new HashMap<String,Object>();

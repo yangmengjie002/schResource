@@ -8,7 +8,7 @@ public interface Tb_teacherStyleService {
 	 * 查询名师风采
 	 * @return
 	 */
-	public List<HashMap<String,Object>> findTeacher();
+	public List<HashMap<String,Object>> findTeacher(String teacherName);
 	/**
 	 * 添加名师风采
 	 */

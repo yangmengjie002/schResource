@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sch.com.dao.zzy.Tb_instituteDao;
+import sch.com.dao.zzy.InstituteDao;
 import sch.com.service.zzy.Tb_instituteService;
 @Service
 public class Tb_instituteServiceImp implements Tb_instituteService {
 	@Autowired
-	Tb_instituteDao tin;
+	InstituteDao tin;
 	/**
 	 * ≤È—Ø
 	 */

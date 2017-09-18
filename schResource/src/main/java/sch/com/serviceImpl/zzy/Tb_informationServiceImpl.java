@@ -7,13 +7,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sch.com.dao.zzy.Tb_informationDao;
+import sch.com.dao.zzy.InformationDao;
 import sch.com.entity.Tb_information;
 import sch.com.service.zzy.Tb_informationService;
 @Service
 public class Tb_informationServiceImpl implements Tb_informationService{
 	@Autowired
-	private Tb_informationDao tb_informationDao;
+	private InformationDao tb_informationDao;
 	/**
 	 * 获取资讯
 	 */

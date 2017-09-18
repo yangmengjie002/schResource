@@ -1,12 +1,16 @@
 package sch.com.serviceImpl.wym;
 
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSON;
+
 import sch.com.dao.wymm.CheckQueryDao;
 import sch.com.dao.wymm.HuiFuDao;
-import sch.com.entity.ResourceParam;
 import sch.com.service.wym.HuiFuDaoService;
 
 @Service
@@ -18,12 +22,10 @@ public class HuiFuDaoServiceImpl implements HuiFuDaoService{
 	
 	//已经下架的列表
 	@Override
-	public HashMap<String,Object> HuiFu(Integer rows,Integer page,ResourceParam rp) {
+	public HashMap<String,Object> HuiFu(Integer rows,Integer page) {
 		HashMap<String,Object> m = new HashMap<String,Object>();
 		m.put("bigPage", rows*page);
 		m.put("smallPage", rows*(page-1));
-		m.put("resourceName", rp.getResourceName());
-		m.put("uploadDate", rp.getUploadDate());
 		Integer rowsTotal = huiFuDao.HuiFuTotal();
 		HashMap<String,Object> huifuMap = new HashMap<String,Object>();
 		huifuMap.put("total", rowsTotal);

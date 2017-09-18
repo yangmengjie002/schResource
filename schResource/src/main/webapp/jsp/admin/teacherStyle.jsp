@@ -51,9 +51,11 @@
 <body>
 	<div>
 		<table id="getTc">
-			
+			搜索：<input id="ss"></input> 
+			<div id="mm" style="width:160px"> 
+			 	<div data-options="selected:true" id="ssName"></div> 
+			</div>
 		</table>
-		
 		<div class='form-group' id="tcInfo" >
 			
 		</div>
@@ -66,8 +68,6 @@
 				<label for='inputEmail3' class='col-sm-2 control-label'>入职日期：</label>
 				<div class='col-sm-3' id='datetimepicker'><input id='dayD' type='text' class='easyui-datebox' name='entry_date' required='required'></div>
 			</div>
-			
-			
 			
 		</form>
 	</div>
@@ -197,9 +197,9 @@
 			afterPageText : '页    共 {pages} 页',
 			displayMsg : '当前显示 {from} - {to} 条记录   共 {total} 条记录',
 		});
-		$("#getTc").datagrid('reload');
+		//---------------$("#getTc").datagrid('reload');
 		
-		//-----------
+		//-----------添加
 		$("#addTeacher").dialog({
 						title: '添加名师',   
 					 	iconCls : 'icon-add',
@@ -217,9 +217,11 @@
 					        str += "<div class='form-group'><label for='inputEmail3' class='col-sm-2 control-label'>名师性别：</label>"+
 					        "<label class='radio-inline'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='radio' value='男' name='teacher_six'>男</label><label class='radio-inline'><input type='radio' value='女' name='teacher_six'>女</label></div></div>";
 					       	str += "<div class='form-group'><label for='inputEmail3' class='col-sm-2 control-label'>名师简介：</label>"+
-					        "<div class='col-sm-10'><textarea class='form-control' name='teacher_info' rows='3'></textarea></div></div>";
-					        $("#addTeacher").html(str);
-					    		   
+					        "<div class='col-sm-10'><textarea class='form-control' name='teacher_info' rows='3'></textarea></div></div>"; 
+					        var objArea = $("textarea[name='teacher_info']");
+					        if(objArea.length == 0){ 
+						        $("#addTeacher").append(str);
+					        } 
 					    },
 					    buttons:[{
 							text:'添加',
@@ -240,6 +242,16 @@
 					})
 		
 	});
+	//创建搜索框
+	$('#ss').searchbox({ 
+		searcher:function(value){ 
+		$("#getTc").datagrid('load',{"teacherName":value}); 
+		}, 
+		menu:'#mm', 
+		prompt:'按姓名搜索' 
+	}); 
+
+	
 	//时间控件
 	$('#dayD').datebox({
     required:true

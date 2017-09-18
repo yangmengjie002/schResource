@@ -5,14 +5,7 @@
 <mapper namespace="sch.com.dao.wymm.ResourceEndDao">
 	<!-- 获得资源结束列表 -->	
 	<select id="ResourceEnd" resultType="HashMap" parameterType="HashMap">
-		select * from (select a.* ,rownum rn from (select * from view_end  where 1=1
-		<if test="resourceName!=null and resourceName!=''">
-			and resource_name like '%${resourceName}%'
-		</if>
-		<if test="uploadDate!=null and uploadDate!=''">
-			and upload_date=#{uploadDate}
-		</if>
-		order by upload_date desc) a where rownum &lt; =#{bigPage} order by upload_date desc) where rn>#{smallPage} order by upload_date desc 
+		select * from (select a.* ,rownum rn from (select * from view_end order by upload_date desc) a where rownum &lt; =#{bigPage} order by upload_date desc) where rn>#{smallPage} order by upload_date desc
 	</select> 
 	
 	<!-- 获得资源结束列表total -->

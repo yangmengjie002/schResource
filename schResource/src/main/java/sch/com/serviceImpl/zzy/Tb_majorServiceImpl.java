@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sch.com.dao.zzy.Tb_majorDao;
+import sch.com.dao.zzy.MajorDao;
 import sch.com.service.zzy.Tb_majorService;
 @Service
 public class Tb_majorServiceImpl implements Tb_majorService{
 	@Autowired
-	private Tb_majorDao md;
+	private MajorDao md;
 	/**
 	 * 获取专业
 	 */

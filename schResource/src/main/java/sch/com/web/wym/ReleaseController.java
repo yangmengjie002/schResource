@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import sch.com.entity.ResourceParam;
 import sch.com.entity.User;
 import sch.com.service.wym.ReleaseResourceService;
 /**
@@ -26,14 +25,10 @@ public class ReleaseController {
 	//获得项目发布列表
 	@RequestMapping("/ReleaseResourceQuery")
 	@ResponseBody
-	public HashMap<String,Object> ReleaseResourceQuery(Integer rows,Integer page,ResourceParam rp){
-		System.out.println(rp.getResourceName());
-		System.out.println(rp.getUploadDate());
-		return releaseResourceService.ReleaseResourceQuery(rows,page,rp);
+	public HashMap<String,Object> ReleaseResourceQuery(Integer rows,Integer page){
+		return releaseResourceService.ReleaseResourceQuery(rows,page);
 	}
 	
-	
-	//更新资源上传表状态
 	@RequestMapping("/ReleaseResourceUPdate")
 	public void ReleaseResourceUPdate(HttpServletResponse resp,String rowArr,HttpSession session){
 		User user = (User) session.getAttribute("user");

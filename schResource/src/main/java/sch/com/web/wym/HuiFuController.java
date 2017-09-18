@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import sch.com.entity.ResourceParam;
 import sch.com.service.wym.HuiFuDaoService;
 
 @Controller
@@ -19,16 +18,12 @@ public class HuiFuController {
 	@Autowired
 	private HuiFuDaoService huiFuDaoService;
 	
-	//已经下架的列表
 	@RequestMapping("/HuiFu")
 	@ResponseBody
-	public HashMap<String,Object> HuiFu(Integer rows,Integer page,ResourceParam rp){	
-		System.out.println(rp.getUploadDate());
-		System.out.println(rp.getResourceName());
-		return huiFuDaoService.HuiFu(rows,page,rp);		
+	public HashMap<String,Object> HuiFu(Integer rows,Integer page){		
+		return huiFuDaoService.HuiFu(rows,page);		
 	}
 	
-	//更新资源上传表
 	@RequestMapping("/HuiFuUpdate")
 	public void HuiFuUpdate(HttpServletResponse resp,String rowArr){
 		huiFuDaoService.HuiFuUpdate(rowArr);

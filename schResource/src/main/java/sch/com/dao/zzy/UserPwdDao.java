@@ -2,7 +2,7 @@ package sch.com.dao.zzy;
 
 import java.util.HashMap;
 
-public interface Tb_userPwdDao {
+public interface UserPwdDao {
 	/**
 	 * ĞŞ¸ÄÓÃ»§ÃÜÂë
 	 * @param hm

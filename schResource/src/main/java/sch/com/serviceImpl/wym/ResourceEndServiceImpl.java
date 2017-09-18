@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.alibaba.fastjson.JSON;
+
 import sch.com.dao.wymm.CheckQueryDao;
 import sch.com.dao.wymm.ResourceEndDao;
-import sch.com.entity.ResourceParam;
 import sch.com.service.wym.ResourceEndService;
 import sch.com.utils.DateUtils;
 
@@ -23,14 +26,12 @@ public class ResourceEndServiceImpl implements ResourceEndService{
 	
 	//获得资源结束列表
 	@Override
-	public HashMap<String, Object> ResourceEnd(Integer rows,Integer page,ResourceParam rp) {
+	public HashMap<String, Object> ResourceEnd(Integer rows,Integer page) {
 		List<HashMap<String, Object>> end = new ArrayList<HashMap<String, Object>>();
 		Integer total = resourceEndDao.ResourceEndTotal();		
 		HashMap<String, Object> m = new HashMap<String, Object>();
 		m.put("bigPage", rows*page);
 		m.put("smallPage", rows*(page-1));
-		m.put("resourceName", rp.getResourceName());
-		m.put("uploadDate", rp.getUploadDate());
 		end = resourceEndDao.ResourceEnd(m);
 		HashMap<String,Object> endMap = new HashMap<String,Object>();
 		endMap.put("total", total);

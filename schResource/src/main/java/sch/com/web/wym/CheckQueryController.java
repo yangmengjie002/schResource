@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import sch.com.entity.ResourceParam;
 import sch.com.entity.User;
 import sch.com.service.wym.CheckQueryService;
 
@@ -29,8 +28,8 @@ public class CheckQueryController {
 	 */
 	@RequestMapping("/checkQuery")
 	@ResponseBody
-	public HashMap<String, Object> checkQuery(Integer rows,Integer page,ResourceParam param){
-		return checkQueryService.checkQuery(rows, page,param);
+	public HashMap<String, Object> checkQuery(Integer rows,Integer page){
+		return checkQueryService.checkQuery(rows, page);
 	}
 	
 	/**

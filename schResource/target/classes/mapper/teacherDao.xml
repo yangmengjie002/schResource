@@ -2,10 +2,13 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="sch.com.dao.zzy.Tb_teacherStyleDao">
+<mapper namespace="sch.com.dao.zzy.TeacherStyleDao">
 	<!-- 获取名师风采 -->
-	<select id="findTeacher" resultType="HashMap">
-		select * from Tb_teacherStyle
+	<select id="findTeacher" resultType="HashMap" parameterType="string" >
+		select * from Tb_teacherStyle where 1 = 1
+		<if test="_parameter!=null and _parameter != '' ">
+			and teacher_name like '%${_parameter}%'
+		</if>
 	</select>
 	<!-- 添加名师 -->
 	<insert id="insertTeacher" parameterType="HashMap">

@@ -3,7 +3,7 @@ package sch.com.dao.zzy;
 import java.util.HashMap;
 import java.util.List;
 
-public interface Tb_majorDao {
+public interface MajorDao {
 	/**
 	 * ²éÑ¯×¨Òµ
 	 * @return

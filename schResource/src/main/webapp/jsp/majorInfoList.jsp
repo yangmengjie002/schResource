@@ -56,63 +56,53 @@
 </style>
 </head>
 <body>
-	<span id="${info.total}" class="haha">${info.total}</span>
-	
-	
-	
 	<div id="body_div">
-		<div id="xibie_div">
-
-				<span id="${info.info[0].MAJOR_ID}" class="brbr"></span>
-			 	<a class="btn btn-info" href="/schResource/jsp/majorQuery.jsp" role="button">${info.info[0].INSTITUTE_NAME}</a>
-				<span class="glyphicon glyphicon-chevron-right"></span>
-				<button type="button" class="btn btn-info">${info.info[0].MAJOR_NAME}</button>
-
-		</div>
-		
-		<div id="forfor_div">
-			<c:forEach var="info" items="${info.info}">
-				<div id="for_div" class="well">
+		<c:forEach var="info" items="${info.info}">
+			<span id="${info.MAJOR_ID}" class="brbr"></span>
+			<div id="xibie_div">
+					<a class="btn btn-info" href="/schResource/jsp/majorQuery.jsp" role="button">${info.INSTITUTE_NAME}</a>
+					<span class="glyphicon glyphicon-chevron-right"></span>
+					<button type="button" class="btn btn-info">${info.MAJOR_NAME}</button>
+				</div>
+			<div id="for_div" class="well">
 				<span class="glyphicon glyphicon-folder-open" id="total">&nbsp;${info.RESOURCE_NAME}</span>
 				<button type="button" name="${info.RESOURCE_ID}" id="typename" class="btn btn-warning btn-xs">${info.RESOURCE_TYPE_NAME}</button>
-				<c:if test="${info.ave==null}">
-					<span id="pingfen_span">暂无评分</span>
-				</c:if>
-				<c:if test="${info.ave!=null}">
-					<span id="pingfen_span">平均评分:${info.ave}分</span>
-				</c:if>				
+				<span id="pingfen_span">
+					<c:if test="${info.ave==null}">
+						平均评分:暂无评分
+					</c:if>
+					<c:if test="${info.ave!=null}">
+						平均评分:${info.ave}分
+					</c:if>
+				</span>
 				<span id="down_span">下载量:${info.count}</span>
 				<br>
 				<div id="jianjie_span">
 					<span>简介:${info.RESOURCE_INFO}</span>
 				</div>
-				<a class="btn btn-primary" id="xiazai_a" href='/schResource/wym/infoInfo.do?id=${info.RESOURCE_ID}' role="button"><span class="glyphicon glyphicon-download-alt"></span>下载</a>
-				</div>
-			</c:forEach>
+				<a class="btn btn-primary" id="xiazai_a" href='/schResource/wym/infoInfo/lan.do?id=${info.RESOURCE_ID}' role="button"><span class="glyphicon glyphicon-download-alt"></span>下载</a>
+			</div>
+		</c:forEach>
+			
+		<div class="box" id="${info.total}">
+			<div id="pagination" class="page fl"></div>
+			<div class="info fl">
+				<p>
+					<!-- 	当前页数：<span id="current">3</span> -->
+				</p>
+			</div>
 		</div>	
 	</div>
-	
-	<!-- 分页 -->
-	<div class="box">
-		<div id="pagination" class="page fl"></div>
-		<div class="info fl">
-			<p>
-				<!-- 	当前页数：<span id="current">3</span> -->
-			</p>
-		</div>
-	</div>
-	
 </body>
 
 <script type="text/javascript">
 
 	window.onload=function(){
-		var total = 1;
-		total = $(".haha").prop("id");
-		//分页
+		var total = $(".box").prop("id");
+		//我的上传分页
 		$("#pagination").pagination({
 			currentPage: 1,
-			totalPage: parseInt(total),
+			totalPage: total,
 			isShow: false,
 			count: 6,
 			prevPageText: "< 上一页",
@@ -135,9 +125,9 @@
 							}else{
 								score = data.info[i].ave;
 							}
-							str +="<div id='for_div' class='well'><span class='glyphicon glyphicon-folder-open' id='total'>&nbsp;"+data.info[i].RESOURCE_NAME+"</span><button type='button' name="+data.info[i].RESOURCE_ID+" id='typename' class='btn btn-warning btn-xs'>"+data.info[i].RESOURCE_TYPE_NAME+"</button><span id='pingfen_span'>平均评分:"+score+"</span><span id='down_span'>下载量:"+data.info[i].count+"</span><br><div id='jianjie_span'><span>简介:"+data.info[i].RESOURCE_INFO+"</span></div><a class='btn btn-primary' id='xiazai_a' href='/schResource/wym/infoInfo/lan.do?id="+data.info[i].RESOURCE_ID+"' role='button'><span class='glyphicon glyphicon-download-alt'></span>下载</a></div>";
+							str +="<span class='glyphicon glyphicon-folder-open' id='total'>&nbsp;"+data.info[i].RESOURCE_NAME+"</span><button type='button' name="+data.info[i].RESOURCE_ID+" id='typename' class='btn btn-warning btn-xs'>"+data.info[i].RESOURCE_TYPE_NAME+"</button><span id='pingfen_span'>平均评分:"+score+"</span><span id='down_span'>下载量:"+data.info[i].count+"</span><br><div id='jianjie_span'><span>简介:"+data.info[i].RESOURCE_INFO+"</span></div><a class='btn btn-primary' id='xiazai_a' href='/schResource/wym/infoInfo.do?id="+data.info[i].RESOURCE_ID+"' role='button'><span class='glyphicon glyphicon-download-alt'></span>下载</a>";
 						}
-						$("#forfor_div").html(str);
+						$(".well").html(str);
 					}
 				});
 			}

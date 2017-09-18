@@ -5,7 +5,7 @@ import java.util.List;
 
 import sch.com.entity.Tb_information;
 
-public interface Tb_informationDao {
+public interface InformationDao {
 	/**
 	 * 获取资讯表内容
 	 * @return

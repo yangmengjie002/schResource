@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sch.com.dao.wymm.CheckQueryDao;
 import sch.com.dao.wymm.ReleaseResourceDao;
-import sch.com.entity.ResourceParam;
 import sch.com.service.wym.ReleaseResourceService;
 import sch.com.utils.DateUtils;
 
@@ -24,13 +23,11 @@ public class ReleaseResourceServiceImpl implements ReleaseResourceService{
 	private CheckQueryDao checkQueryDao;
 	
     //获得资源发布列表
-	public HashMap<String,Object> ReleaseResourceQuery(Integer rows,Integer page,ResourceParam rp) {
+	public HashMap<String,Object> ReleaseResourceQuery(Integer rows,Integer page) {
 		List<HashMap<String,Object>> re = new ArrayList<HashMap<String,Object>>();
 		HashMap<String,Object> param = new HashMap<String,Object>();
 		param.put("bigPage", rows*page);
 		param.put("smallPage", rows*(page-1));
-		param.put("uploadDate", rp.getUploadDate());
-		param.put("resourceName", rp.getResourceName());
 		re = releaseResourceDao.ReleaseResourceQuery(param);
 		Integer total = releaseResourceDao.ReleasetotalQuery();
 		HashMap<String,Object> reMap = new HashMap<String,Object>();

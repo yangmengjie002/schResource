@@ -3,6 +3,7 @@ package sch.com.web.zzy;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import sch.com.utils.BaseController;
 @Controller
 @RequestMapping("/teacherStyle")
 public class TeacherStyleController {
-	String fPath = "";
+	String fPath = "";      //¿œ ¶’’∆¨¬∑æ∂
 	@Autowired
 	private Tb_teacherStyleService tss;
 	/**
@@ -31,11 +32,16 @@ public class TeacherStyleController {
 	 * @param resp
 	 */
 	@RequestMapping("/findTeacher")
-	public void findTeacher(HttpServletRequest req,HttpServletResponse resp){
-		List<HashMap<String, Object>> findTeacher = tss.findTeacher();
-		for (int i = 0; i < findTeacher.size(); i++) {
-			System.out.println(findTeacher.get(i).toString());
+	public void findTeacher(HttpServletRequest req,HttpServletResponse resp,String teacherName){
+		if(teacherName!=null){
+			try {
+				req.setCharacterEncoding("utf-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
+		System.out.println("teacherName>>>>"+teacherName);
+		List<HashMap<String, Object>> findTeacher = tss.findTeacher(teacherName);
 		req.setAttribute("findTeacher", findTeacher);
 		BaseController.writeJson(resp, findTeacher);
 	}

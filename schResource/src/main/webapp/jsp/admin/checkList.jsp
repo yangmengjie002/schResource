@@ -16,11 +16,8 @@
 </head>
 <body>
 		
-	输入资源名称：<input id="resouceName" class="easyui-validatebox"/>  
-	输入日期：<input type="text" id="uploadData" class="easyui-datebox"/>  
-	<a id="checkSeach" href="#" class="easyui-linkbutton" data-options="iconCls : 'icon-search'">搜索</a> 
-	
-	
+	<!-- <input type="button" id="pizhun" class="btn btn-default btn-success" value="批准" />
+	<input type="button" id="bohui" class="btn btn-default btn-danger" value="驳回" /> -->
 
 	<table id="dg">
 		<div id="dd">
@@ -52,10 +49,10 @@
 		fitColumns:true,
 		striped:true,
 		rownumbers:true,
-		pagination:true,		
+		pagination:true,
+		fit:true,
 		pageSize:3,
 		pageList:[3,6,9,12],
-//		fit:true,
 		toolbar:[{      
 			text:"批准",            //批准按钮
 			iconCls: 'icon-ok',
@@ -82,6 +79,10 @@
 	}); 
 	
 	
+	//批准按钮点击事件
+	$('#pizhun').click(function(){
+			
+	});
  	//批准按钮模态框
 	$('#dd').dialog({    
 	    title: '批准操作',    
@@ -218,19 +219,6 @@
 		var rowData = $("#dg").datagrid("getSelected");
 		alert(rowData.RESOURCE_ID);
 	});
-	
-	
-	//搜索按钮点击事件	
-	$('#checkSeach').click(function(){
-		var arr = {};
-		arr["uploadDate"] = $("#uploadData").val();
-		arr["resourceName"] = $("#resouceName").val();
-		$('#dg').datagrid('load',arr);    
-		
-	});
-	
-	
-	
 	
 	
 </script>

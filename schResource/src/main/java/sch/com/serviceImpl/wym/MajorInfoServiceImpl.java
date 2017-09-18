@@ -17,7 +17,7 @@ public class MajorInfoServiceImpl implements MajorInfoService{
 	
 	//查询某个专业下的资源
 	public HashMap<String, Object> MajorInfoQuery(Integer a,Integer currPage) {
-		Integer pageSize = 2;
+		Integer pageSize = 1;
 		if(currPage ==null){
 			currPage = 1;
 		}
@@ -39,9 +39,8 @@ public class MajorInfoServiceImpl implements MajorInfoService{
 		
 		Integer countTotal = majorInfoDao.MajorInfoTotal(a);//总条数
 		HashMap<String, Object> infoMap = new HashMap<String, Object>();
-		infoMap.put("total", (int)Math.ceil(countTotal*1.0/pageSize));//把总页数存入map
+		infoMap.put("total", countTotal/pageSize);//把总页数存入map
 		infoMap.put("info", info);//把表格数据存入map
-		System.out.println(infoMap);
 		return infoMap;
 	}
 }

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import sch.com.entity.ResourceParam;
 import sch.com.entity.User;
 import sch.com.service.wym.ResourceEndService;
 
@@ -21,18 +20,16 @@ public class ResourceEndController {
 	@Autowired
 	private ResourceEndService resourceEndService;	
 	
-	//获取可以下架的资源
+	
 	@RequestMapping("/ResourceEnd")
 	@ResponseBody
-	public HashMap<String,Object> ResourceEnd(Integer rows,Integer page,ResourceParam rp){
-		System.out.println(rp.getResourceName());
-		System.out.println(rp.getUploadDate());
-		HashMap<String,Object> map = resourceEndService.ResourceEnd(rows,page,rp);
+	public HashMap<String,Object> ResourceEnd(Integer rows,Integer page){
+		System.out.println(rows);
+		HashMap<String,Object> map = resourceEndService.ResourceEnd(rows,page);
+		System.out.println(map);
 		return map;		
 	}
 	
-	
-	//插入资源下架表
 	@RequestMapping("/ResourceEndInsert")
 	public void ResourceEndInsert(HttpServletResponse resp,String rowArr,HttpSession session){
 		User user = (User) session.getAttribute("user");

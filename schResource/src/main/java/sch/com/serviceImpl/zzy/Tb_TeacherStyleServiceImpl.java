@@ -6,17 +6,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sch.com.dao.zzy.Tb_teacherStyleDao;
+import sch.com.dao.zzy.TeacherStyleDao;
 import sch.com.service.zzy.Tb_teacherStyleService;
 @Service
 public class Tb_TeacherStyleServiceImpl implements Tb_teacherStyleService {
 	@Autowired
-	private Tb_teacherStyleDao tStyleDao;
+	private TeacherStyleDao tStyleDao;
 	/**
 	 * 查询名师风采
 	 */
-	public List<HashMap<String, Object>> findTeacher() {
-		return tStyleDao.findTeacher();
+	public List<HashMap<String, Object>> findTeacher(String teacherName) {
+		return tStyleDao.findTeacher(teacherName);
 	}
 	/**
 	 * 添加
