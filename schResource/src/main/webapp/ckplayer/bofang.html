@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>ckplayer演示</title>
+</head>
+<body>
+	<div id="ckplayer"></div>
+	<!--用于替换播放器-->
+</body>
+<script src="ckplayer/ckplayer.js" type="text/javascript"
+	charset="utf-8"></script>
+<script type="text/javascript">
+         CKobject.embed(
+             "ckplayer/ckplayer.swf",
+             "ckplayer",
+             "ckplayer1",
+             "600",
+            "400",
+            false,
+             {
+                 f:"1.mp4",
+                 c:0
+             },
+             ['1.mp4->1.mp4']
+             
+         );
+     </script>
+</html>

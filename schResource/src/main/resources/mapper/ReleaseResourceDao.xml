@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sch.com.dao.wymm.ReleaseResourceDao">
+	<!-- 获得资源发布列表 -->	
+	<select id="ReleaseResourceQuery" resultType="HashMap" parameterType="HashMap">
+		select * from (select a.* ,rownum rn from (select * from view_release where 1=1 
+		<if test="uploadDate!=null and uploadDate!=''">
+			and upload_date=#{uploadDate}
+		</if>
+		<if test="resourceName!=null and resourceName!=''">
+			and resource_name like '%${resourceName}%'
+		</if> 
+		order by upload_date desc) a where rownum &lt;=#{bigPage} order by upload_date desc) where rn>#{smallPage}order by upload_date desc 
+	</select> 
+	
+	<!-- 获得资源发布列表total -->
+	<select id="ReleasetotalQuery" resultType="Integer">
+		select count(*) from view_release
+	</select>
+	
+	<!-- 插入资源审核表 -->
+	<insert id="ReleaseResourceInsert" parameterType="HashMap">
+		insert into tb_release values(seq_tb_release.nextval,#{resourceId},#{release_date},#{user_id})
+	</insert>
+	
+</mapper>

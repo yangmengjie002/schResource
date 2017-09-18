@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sch.com.dao.wymm.ResourceEndDao">
+	<!-- 获得资源结束列表 -->	
+	<select id="ResourceEnd" resultType="HashMap" parameterType="HashMap">
+		select * from (select a.* ,rownum rn from (select * from view_end  where 1=1
+		<if test="resourceName!=null and resourceName!=''">
+			and resource_name like '%${resourceName}%'
+		</if>
+		<if test="uploadDate!=null and uploadDate!=''">
+			and upload_date=#{uploadDate}
+		</if>
+		order by upload_date desc) a where rownum &lt; =#{bigPage} order by upload_date desc) where rn>#{smallPage} order by upload_date desc 
+	</select> 
+	
+	<!-- 获得资源结束列表total -->
+	<select id="ResourceEndTotal" resultType="Integer">
+		select count(*) from view_end
+	</select>
+	
+	<!-- 插入资源下架表 -->
+	<insert id="ResourceEndInsert" parameterType="HashMap">
+		insert into tb_resource_soldout values(seq_resource_soldout.nextval,#{resourceId},#{soldout_date},#{user_id})
+	</insert>
+		
+	
+	<!-- 查询下架表是否已存在曾经下架过的资源 -->
+	<select id="IsEndQuery" parameterType="String">
+		select * from tb_resource_soldout where resource_id=#{resourceId}
+	</select>
+	
+</mapper>

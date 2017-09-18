@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sch.com.dao.zzy.Tb_informationDao">
+	<!-- 获取资讯表内容 -->
+	<select id="getList" resultType="sch.com.entity.Tb_information">
+		select * from Tb_information
+	</select>
+	<!-- 添加资讯 -->
+	<insert id="insertInfo" parameterType="Tb_information">
+		insert into Tb_information values(sql_information.nextval,#{informationTitle},#{informationContent},#{user_id})
+	</insert>
+	<!-- 删除资讯 -->
+	<delete id="deleteInfo" parameterType="int">
+		delete from Tb_information where information_id = #{informationId}
+	</delete>
+	<!-- 修改资讯 -->
+	<update id="updateInfo" parameterType="HashMap">
+		update Tb_information set information_title = #{informationTitle},information_content = #{informationContent}
+		where information_id = #{informationId}
+	</update>
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="sch.com.dao.yang.QueryCountDao">
+ 	<!-- 上传信息统计 -->
+ 	<select id="getUpInfo" resultType="map" parameterType="sch.com.entity.QueryEntity">
+ 		select * from (select rownum r,t.* from (select * from upCount where 1=1
+ 		<if test="username!=null and username!=''">
+ 			and user_name like '%${username}%'
+ 		</if>
+ 		<if test="resourceName!=null and resourceName != ''">
+ 			and resource_name like '%${resourceName}%'
+ 		</if>
+ 		<if test="instituteId!=null">
+ 			and institute_id = #{instituteId}
+		</if>
+		<if test="majorId!=null">
+ 			and major_id = #{majorId}
+		</if>
+		<if test="typeId!=null">
+ 			and resource_type_id = #{typeId}
+		</if>
+		<if test="startDate!=null and startDate != ''">
+ 			and upTime > to_date(#{startDate},'yyyy-mm-dd')
+		</if>
+		<if test="endDate!=null and endDate != ''">
+ 			and upTime &lt; to_date(#{endDate},'yyyy-mm-dd')
+		</if>
+ 		) t)  where r > #{startIndex} and r &lt; #{endIndex} 
+ 	</select>
+ 	<!-- 下载信息统计 -->
+ 	<select id="getDownInfo" resultType="map" parameterType="sch.com.entity.QueryEntity">	
+ 		select * from (select rownum r,t.* from (select dc.*,to_date(dc.UPLOAD_DATE,'yyyy-mm-dd') downTime,rt.resource_type_name from downCount dc,tb_resource_type rt where dc.RESOURCE_TYPE_ID = rt.resource_type_id
+ 		<if test="username!=null and username!=''">
+ 			and dc.user_name like '%${username}%'
+ 		</if>
+ 		<if test="resourceName!=null and resourceName != ''">
+ 			and dc.resource_name like '%${resourceName}%'
+ 		</if>
+		<if test="typeId!=null">
+ 			and dc.resource_type_id = #{typeId}
+		</if>
+		<if test="startDate!=null and startDate != ''">
+ 			and downTime > to_date(#{startDate},'yyyy-mm-dd')
+		</if>
+		<if test="endDate!=null and endDate != ''">
+ 			and downTime &lt; to_date(#{endDate},'yyyy-mm-dd')
+		</if>
+		<if test="minCount!=null">
+ 			and downcount>=minCount
+		</if>
+		<if test="maxCount!=null">
+ 			and downcount &lt; minCount
+		</if>
+		) t)  where r > #{startIndex} and r &lt; #{endIndex} 
+
+ 	</select> 
+ 	<!-- 上传总条数 -->
+ 	<select id="getUpCount" resultType="int" parameterType="sch.com.entity.QueryEntity">
+ 		select count(*) from upCount
+ 		where 1=1
+ 		<if test="username!=null and username!=''">
+ 			and user_name like '%${username}%'
+ 		</if>
+ 		<if test="resourceName!=null and resourceName != ''">
+ 			and resource_name like '%${resourceName}%'
+ 		</if>
+ 		<if test="instituteId!=null">
+ 			and institute_id = #{instituteId}
+		</if>
+		<if test="majorId!=null">
+ 			and major_id = #{majorId}
+		</if>
+		<if test="typeId!=null">
+ 			and resource_type_id = #{typeId}
+		</if>
+		<if test="startDate!=null and startDate != ''">
+ 			and upTime > to_date(#{startDate},'yyyy-mm-dd')
+		</if>
+		<if test="endDate!=null and endDate != ''">
+ 			and upTime &lt; to_date(#{endDate},'yyyy-mm-dd')
+		</if>
+ 	</select>
+ 	<!-- 下载总条数 -->
+ 	<select id="getDownCount" resultType="int" parameterType="sch.com.entity.QueryEntity">
+ 		select count(*) from (select dc.*,to_date(dc.UPLOAD_DATE,'yyyy-mm-dd') downTime,rt.resource_type_name from downCount dc,tb_resource_type rt where dc.resource_type_id = rt.resource_type_id
+ 		<if test="username!=null and username!=''">
+ 			and dc.user_name like '%${username}%'
+ 		</if>
+ 		<if test="resourceName!=null and resourceName != ''">
+ 			and dc.resource_name like '%${resourceName}%'
+ 		</if>
+		<if test="typeId!=null">
+ 			and dc.resource_type_id = #{typeId}
+		</if>
+		<if test="startDate!=null and startDate != ''">
+ 			and downTime > to_date(#{startDate},'yyyy-mm-dd')
+		</if>
+		<if test="endDate!=null and endDate != ''">
+ 			and downTime &lt; to_date(#{endDate},'yyyy-mm-dd')
+		</if>
+		<if test="minCount!=null">
+ 			and dc.downcount>=minCount
+		</if>
+		<if test="maxCount!=null">
+ 			and dc.downcount &lt; minCount
+		</if>
+		)
+ 	</select> 
+ 	<!-- 查询学院上传情况 -->
+ 	<select id="QueryInstitute" parameterType="java.util.Date"  resultType="map">
+ 		select count(resource_id) inCount,institute_id,institute_name from (
+         select ru.resource_id,y.* from (select i.institute_id,i.institute_name,m.major_id,m.major_name from tb_institute i left join tb_major m on i.institute_id = m.institute_id) y left join
+		 (select resource_id,major_id from tb_resource_upload where to_date(upload_date,'yyyy-mm-dd')>#{date}) ru on ru.major_id = y.major_id
+		) group by institute_id,institute_name
+ 	</select>
+ 	<!-- 查询某学院各专业上传情况 -->
+ 	<select id="queryMajor" parameterType="map" resultType="map">
+ 		select count(resource_id) maCount,major_id,major_name from (
+       		select ru.resource_id,y.* from (select i.institute_id,i.institute_name,m.major_id,m.major_name from tb_institute i left join tb_major m on i.institute_id = m.institute_id) y left join
+			(select resource_id,major_id from tb_resource_upload where to_date(upload_date,'yyyy-mm-dd')>#{date}) ru on ru.major_id = y.major_id
+		)  where institute_id = #{instituteId}  group by major_id,major_name
+ 	</select>
+ 	<!-- 查询学院下载情况 -->
+ 	<select id="QueryInstituteDown" parameterType="java.util.Date"  resultType="map"> 
+ 		select institute_id,count(resource_id) downInstCount,institute_name from (
+			select * from (select i.institute_id,i.institute_name,m.major_id,m.major_name from tb_institute i left join tb_major m on i.institute_id = m.institute_id) s left join
+			(select rd.resource_id,rd.download_date,ru.major_id from tb_resource_download rd,tb_resource_upload ru where rd.resource_id = ru.resource_id and to_date(download_date,'yyyy-mm-dd hh24-mi-ss')>#{date}) h
+			on s.major_id = h.major_id
+		) group by institute_id,institute_name
+ 	</select>
+ 	<!-- 查询某学院各专业资源下载情况 -->
+ 	<select id="queryMajorDown" parameterType="map" resultType="map">
+ 		select major_id,count(resource_id) downMaCount,major_name from (
+			select s.major_id,s.institute_id,s.institute_name,s.major_name,h.resource_id from (select i.institute_id,i.institute_name,m.major_id,m.major_name from tb_institute i left join tb_major m on i.institute_id = m.institute_id) s left join
+			(select rd.resource_id,rd.download_date,ru.major_id from tb_resource_download rd,tb_resource_upload ru where rd.resource_id = ru.resource_id and to_date(download_date,'yyyy-mm-dd hh24-mi-ss')>#{date}) h
+			on s.major_id = h.major_id
+		) where institute_id = #{instituteId} group by major_id,major_name
+ 	</select>
+ </mapper>

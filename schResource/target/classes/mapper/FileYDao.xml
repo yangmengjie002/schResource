@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="sch.com.dao.yang.FileYDao">
+  	<!-- 搜索上传文件信息 -->
+  	<select id="getFileInfo" resultType="map">
+  		select * from tb_resource_upload where resource_id = #{id}
+  	</select>
+  	<!-- 根据id搜索资源的所有信息 -->
+  	<select id="showDown" resultType="map">
+  		select ru.*,rt.resource_type_name from tb_resource_upload ru,tb_resource_type rt where ru.resource_type_id = rt.resource_type_id and ru.resource_id = #{id}
+  	</select>
+  	<!-- 插入下载资源表 -->
+  	<insert id="insertDownload" parameterType="map">
+  		insert into tb_resource_download values(seq_resource_download.nextval,#{resourceId},#{userId},#{downloadDate})
+  	</insert>
+  	<!-- 根据后缀名获取有关的所有信息 -->
+  	<select id="getResourceInfoFix"  resultType="map">
+  		select rt.*,rp.postfix_id,rp.postfix_name from tb_resource_type rt,tb_resource_type_postfix rp
+		where rt.resource_type_id = rp.resource_type_id and rt.resource_type_status = 1 and rp.postfix_name = #{postfix}
+  	</select>
+  	<!-- 插入资源表 -->
+  	<insert id="fileUploadAll" useGeneratedKeys="false" parameterType="sch.com.entity.ResourceYInfo">
+  		insert into tb_resource_upload values(seq_resource_upload.nextval,#{resourceTypeId},#{userId},#{url},#{uploadDate},#{statusId},#{majorId},#{resourceName},#{resourceInfo})
+  	</insert>
+  	<!-- 查询用户下载情况 -->
+  	<select id="selectDown" resultType="map">
+  		select * from tb_resource_download where user_id = #{userId} and resource_id = #{resourceId} 
+  	</select>
+  </mapper>

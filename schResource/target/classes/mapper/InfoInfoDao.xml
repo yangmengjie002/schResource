@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sch.com.dao.wymm.InfoInfoDao">	
+	<!-- 获得某个资源详情 -->
+	<select id="InfoInfoQuery" resultType="HashMap" parameterType="Integer"> 
+		select * from view_infoinfo where resource_id=#{resource_id}
+	</select> 
+	
+	<!-- 获得资源评论列表 -->
+	<select id="CommentQuery" resultType="HashMap" parameterType="HashMap"> 
+		select * from (select a.*,rownum rn from(select t.user_name,e.evaluationcontent,e.evaluationtime from tb_evaluation e,tb_user t where e.user_id=t.user_id and e.resourceid=#{resourceid} order by e.evaluationtime desc) a where rownum &lt; = #{bigPage} order by a.evaluationtime desc) b where rn>#{smallPage} order by b.evaluationtime desc
+	</select> 
+	
+	<!-- 获得评论总数 -->
+	<select id="CommentCountQuery" resultType="Integer" parameterType="Integer">
+		select count(*) from tb_evaluation where resourceid=#{resourceid}
+	</select>
+	
+	<!-- 插入评论表 -->
+	<insert id="CommentInsert" parameterType="HashMap">
+		insert into tb_evaluation values(sql_evaluation.nextval,#{user_id},#{text},#{date},#{resource_id})
+	</insert>
+	
+	<!-- 查询用户是否评论过 -->
+	<select id="IsCommentQuery" resultType="HashMap" parameterType="HashMap">
+		select * from tb_score where user_id=#{user_id} and resourceId=#{resourceId}
+	</select>
+	
+	<!-- 查询用户是否评论过 -->
+	<select id="IsCollectQuery" resultType="HashMap" parameterType="HashMap">
+		select * from tb_resource_collect where user_id=#{user_id} and resourceId=#{resourceId}
+	</select>
+	
+	<!-- 插入收藏 -->
+	<insert id="CollectInsert" parameterType="HashMap">
+		insert into tb_resource_collect values(sql_resource_collect.nextval,#{resourceId},#{user_id},#{date})
+	</insert>
+	
+	<!-- 取消收藏 -->
+	<delete id="RemoveCollectDelete" parameterType="HashMap">
+		delete tb_resource_collect where user_id=#{user_id} and resourceid=#{resourceId}
+	</delete>
+	
+	<!-- 插入评分 -->
+	<insert id="ScoreInsert" parameterType="HashMap">
+		insert into tb_score values(sql_score.nextval,#{resourceId},#{user_id},#{score},#{date})
+	</insert>
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+

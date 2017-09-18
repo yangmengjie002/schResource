@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sch.com.dao.wymm.MyCenterDao">	
+	<!-- 获取我的上传 -->
+	<select id="MyUploadQuery" resultType="HashMap" parameterType="int">
+		select * from (select a.*,rownum rn from (select * from view_centerupload order by upload_date desc) a where rownum &lt; =#{bigPage} and user_id=#{user_id} order by upload_date desc) where rn>#{smallPage} and user_id=#{user_id} order by upload_date desc
+	</select> 
+	
+	<!-- 获取我的下载-->
+	<select id="MyDownQuery" resultType="HashMap" parameterType="int">
+		select * from (select a.*,rownum rn from (select * from view_down) a where rownum &lt; =#{bigPage} and user_id=#{user_id} order by download_date desc) where rn>#{smallPage} and user_id=#{user_id} order by download_date desc
+ 	</select>
+	
+	<!-- 获取我的收藏-->
+	<select id="MyCollectQuery" resultType="HashMap" parameterType="HashMap">
+		select * from (select a.*,rownum rn from (select * from view_collect) a where rownum &lt; =#{bigPage} and user_id=#{user_id} order by addTime desc) where rn>#{smallPage} and user_id=#{user_id} order by addTime desc
+ 	</select>
+ 	
+ 	<!-- 获取上传总条数 -->
+ 	<select id="MyUploadCount" resultType="Integer" parameterType="Integer">
+ 		select count(*) from view_centerupload where user_id=#{user_id}
+ 	</select>
+ 		
+ 	<!-- 获取下载总条数 -->
+ 	<select id="MyDownCount" resultType="Integer" parameterType="Integer">
+ 		select count(*) from view_down where user_id=#{user_id}
+ 	</select>
+ 	
+ 	<!-- 获取收藏总条数 -->
+ 	<select id="MyCollectCount" resultType="Integer" parameterType="Integer">
+ 		select count(*) from view_collect where user_id=#{user_id}
+ 	</select>
+</mapper>
+
+
+
+

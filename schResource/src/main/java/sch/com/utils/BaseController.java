@@ -9,14 +9,15 @@ import com.alibaba.fastjson.JSON;
 
 public class BaseController {
 	/**
-	 * Èô²ÎÊýÖÐÃ»ÓÐÊ±¼ä¸ñÊ½×ª»»ÓÃ´Ëjson
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ê½×ªï¿½ï¿½ï¿½Ã´ï¿½json
 	 * @param response
 	 * @param obj
 	 */
-	public void writeJson(HttpServletResponse response,Object obj){
-		response.setContentType("text/html;charset=utf-8");
+	public static void writeJson(HttpServletResponse response,Object obj){
+		
 		String jsonString = JSON.toJSONString(obj);
 		try {
+			response.setContentType("text/html;charset=utf-8");
 			PrintWriter out = response.getWriter();
 			out.print(jsonString);
 			out.flush();
@@ -28,11 +29,11 @@ public class BaseController {
 	}
 	
 	/**
-	 * ¶ÔÏó²ÎÊýÖÐÈôÓÐÈÕÆÚ¸ñÊ½£¬ÈÕÆÚ×ª»»Îªyyyy-MM-dd hh:mm:ss¸ñÊ½
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Îªyyyy-MM-dd hh:mm:ssï¿½ï¿½Ê½
 	 * @param response
 	 * @param obj
 	 */
-	public void writeDateJson(HttpServletResponse response,Object obj){
+	public static void writeDateJson(HttpServletResponse response,Object obj){
 		response.setContentType("text/html;charset=utf-8");
 		String jsonString = JSON.toJSONStringWithDateFormat(obj, "yyyy-MM-dd hh:mm:ss");
 		try {
@@ -40,6 +41,18 @@ public class BaseController {
 			out.print(jsonString);
 			out.flush();
 			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static void insertResponose(int flag,HttpServletResponse response){
+		try {
+			
+			PrintWriter out = response.getWriter();
+			if(flag==1){
+				out.print("success");
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

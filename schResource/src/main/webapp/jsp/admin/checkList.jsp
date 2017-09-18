@@ -1,0 +1,243 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<script type="text/javascript" src="http://localhost:9088/schResource/js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="http://localhost:9088/schResource/js/easyui/jquery.easyui.min.js"></script>
+<link rel="stylesheet" href="http://localhost:9088/schResource/js/easyui/themes/default/easyui.css" type="text/css"></link>
+<link rel="stylesheet" href="http://localhost:9088/schResource/js/easyui/themes/icon.css" type="text/css"></link>
+<script type="text/javascript"
+	src="http://localhost:9088/schResource/js/easyui/easyui-lang-zh_CN.js"></script>  
+
+<title>审核上传页面</title>
+</head>
+<body>
+		
+	输入资源名称：<input id="resouceName" class="easyui-validatebox"/>  
+	输入日期：<input type="text" id="uploadData" class="easyui-datebox"/>  
+	<a id="checkSeach" href="#" class="easyui-linkbutton" data-options="iconCls : 'icon-search'">搜索</a> 
+	
+	
+
+	<table id="dg">
+		<div id="dd">
+			
+		</div> 
+		
+		<div id="dd1">
+			
+		</div> 
+	</table>
+	
+	
+		
+</body>
+
+
+
+<script type="text/javascript">
+	//表格list
+	$('#dg').datagrid({    
+	    url:'/schResource/wym/checkQuery.do',    
+	    columns:[[    
+	        {field:'RESOURCE_NAME',title:'文件名称',width:200},    
+	        {field:'USER_NAME',title:'上传人',width:120},    
+	        {field:'UPLOAD_DATE',title:'上传时间',width:120},
+	        {field:'RESOURCE_ID',title:'资源ID',width:120,hidden:true}
+	    ]], 
+		singleSelect:true,
+		fitColumns:true,
+		striped:true,
+		rownumbers:true,
+		pagination:true,		
+		pageSize:3,
+		pageList:[3,6,9,12],
+//		fit:true,
+		toolbar:[{      
+			text:"批准",            //批准按钮
+			iconCls: 'icon-ok',
+			handler: function(){
+				var rowData = $("#dg").datagrid("getSelected");//获取选中的行对象
+				if(rowData){
+					$("#dd").dialog('open');
+				}else{
+					alert("请选中一条数据");
+				}
+			}
+		},"-",{
+			text:"驳回",           //驳回按钮
+			iconCls: 'icon-no',
+			handler: function(){
+				var rowData = $("#dg").datagrid("getSelected");//获取选中的行对象
+				if(rowData){
+					$("#dd1").dialog('open');
+				}else{
+					alert("请选中一条数据");
+				}	
+			}
+		}]
+	}); 
+	
+	
+ 	//批准按钮模态框
+	$('#dd').dialog({    
+	    title: '批准操作',    
+	    width: 700,    
+	    height: 400,    
+	    closed: true,    
+	    cache: false,     
+	    modal: true,
+	    onOpen:function(){
+	    	var rowData = $("#dg").datagrid("getSelected");
+	    	var index =$("#dg").datagrid("getRowIndex",rowData);
+	    	var str = "";
+	    	str += "<table class='table table-hover table-striped'><tr><td>文件名称:</td><td>"+rowData.RESOURCE_NAME+"</td></tr>";
+	    	str += "<tr><td>上传人:</td><td>"+rowData.USER_NAME+"</td></tr>";
+	    	str += "<tr><td>上传人所属专业:</td><td>"+rowData.INSTITUTE_NAME+"</td></tr>";
+	    	str += "<tr><td>上传人所属院系:</td><td>"+rowData.MAJOR_NAME+"</td></tr>";   	
+	    	str += "<tr><td>上传时间:</td><td>"+rowData.UPLOAD_DATE+"</td></tr>";
+	    	str += "<tr><td>选择资源归类:</td><td><select id='inSelect'><option>请选择院</option></select></td></tr>";
+	    	str += "<tr><td>选择资源归类:</td><td><select id='maSelect'></select></td></tr>";
+	    	str += "<tr><td>同意原因:</td><td><textarea id='checkIdea'></textarea></td></tr></table>";
+	    	select();
+	    	$('#dd').html(str);
+	    },
+	    buttons:[{
+	        text : '同意',
+		        handler :function(){
+		        	var rowData = $("#dg").datagrid("getSelected");
+		        	if (confirm("确认同意么吗？")) {
+		    			$.ajax({
+							url:"/schResource/wym/checkInsert.do",
+							data:{
+								"resourceId":rowData.RESOURCE_ID,
+								"checkIdea":$("#checkIdea").val(),
+								"checkStatuId":1,
+								"major_name":$("#maSelect").val()
+							}
+						});
+		    		$("#dd").dialog('close');								
+					var index =$("#dg").datagrid("getRowIndex",rowData);//获得当前行的索引
+					$('#dg').datagrid('deleteRow',index); // 删除一行
+		        	}
+		        	
+		        } 
+	    },
+		    	{
+		    text : '关闭',
+		    	handler :function(){
+		        	$("#dd").dialog('close');
+		        }
+	    }]
+	});
+	
+		//下拉框级联函数
+		function select(){
+			$.ajax({
+				url:"/schResource/wym/instituteAllQuery.do",
+				dataType:"JSON",
+				success:function(data){
+					var str = "";
+					for(var i=0;i<data.length;i++){
+						str += "<option>"+data[i].instituteName+"</option>";
+					}
+					$("#inSelect").append(str);
+					
+					$("#inSelect").change(function(){
+						$.ajax({
+							url:"/schResource/wym/checkMajQuery.do",
+							data:{
+								'institute_name':$("#inSelect").val()
+							},
+							dataType:'JSON',							
+							success:function(data){
+								var str = "";
+								for(var i=0;i<data.length;i++){
+									str += "<option>"+data[i].MAJOR_NAME+"</option>";
+								}
+								$("#maSelect").html(str);
+							}
+						});
+					})
+				}
+			});
+		}
+		
+
+	//驳回按钮模态框
+	$('#dd1').dialog({    
+	    title: '批准操作',    
+	    width: 700,    
+	    height: 400,    
+	    closed: true,    
+	    cache: false,     
+	    modal: true,
+	    onOpen:function(){
+	    	var rowData = $("#dg").datagrid("getSelected");
+	    	var str = "";
+	    	str += "<table class='table table-hover table-striped'><tr><td>文件名称:</td><td>"+rowData.RESOURCE_NAME+"</td></tr>";
+	    	str += "<tr><td>上传人:</td><td>"+rowData.USER_NAME+"</td></tr>";
+	    	str += "<tr><td>上传人所属院系:</td><td>"+rowData.INSTITUTE_NAME+"</td></tr>";
+	    	str += "<tr><td>上传人所属专业:</td><td>"+rowData.MAJOR_NAME+"</td></tr>";
+	    	str += "<tr><td>上传时间:</td><td>"+rowData.UPLOAD_DATE+"</td></tr>";
+	    	str += "<tr><td>驳回原因:</td><td><textarea id='checkIdea'></textarea></td></tr>";
+	    	$('#dd1').html(str);
+	    },
+	    buttons:[{
+	        text : '驳回',
+		        handler :function(){
+		        	var rowData = $("#dg").datagrid("getSelected");
+		        	if (confirm("确认驳回么吗？")) {
+						$.ajax({
+							url:"/schResource/wym/checkInsert.do",
+							data:{
+								"resourceId":rowData.RESOURCE_ID,
+								"checkIdea":$("#checkIdea").val(),
+								"checkStatuId":$(this).prop("name")
+							}
+						});
+						$("#dd1").dialog('close');
+						var index =$("#dg").datagrid("getRowIndex",rowData);//获得当前行的索引
+						$('#dg').datagrid('deleteRow',index); // 删除一行
+		        	}
+		        } 
+	    },
+		    	{
+		    text : '关闭',
+		    	handler :function(){
+		        	$("#dd").dialog('close');
+		        }
+	    }]
+	});
+	
+	//预览点击事件
+	$("#yulan").click(function(){
+		var rowData = $("#dg").datagrid("getSelected");
+		alert(rowData.RESOURCE_ID);
+	});
+	
+	
+	//搜索按钮点击事件	
+	$('#checkSeach').click(function(){
+		var arr = {};
+		arr["uploadDate"] = $("#uploadData").val();
+		arr["resourceName"] = $("#resouceName").val();
+		$('#dg').datagrid('load',arr);    
+		
+	});
+	
+	
+	
+	
+	
+</script>
+</html>
+
+
+
+
+
+

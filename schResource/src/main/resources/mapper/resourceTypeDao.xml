@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="sch.com.dao.yang.ResourceTypeYDao">
+ 	<!-- 获取资源类型信息 -->
+ 	<select id="getResourceType" resultType="map">
+ 		select * from tb_resource_type where resource_type_status = 1
+ 	</select>
+ 	<!-- 根据资源id获取资源后缀信息 -->
+ 	<select id="getResourcePostfix" resultType="map">
+ 		select * from tb_resource_type_postfix where resource_type_id = #{id} and resource_postfix_status = 1
+ 	</select>
+ 	<!-- 插入资源类型表 -->
+ 	<insert id="insertResourceType" parameterType="sch.com.entity.ResourceYType">
+ 		insert into tb_resource_type values(seq_resource_type.nextval,#{resourceTypeName},#{resourceTypeSize},1)
+ 	</insert>
+ 	<!-- 插入后缀表 -->
+ 	<insert id="insertResourcePostfix">
+ 		insert into tb_resource_type_postfix values(seq_postfix.nextval,seq_resource_type.currval,#{ss},1)
+ 	</insert>
+ 	<!-- 插入后缀表 bymap-->
+ 	<insert id="insertResourcePostfixByMap" parameterType="map">
+ 		insert into tb_resource_type_postfix values(seq_postfix.nextval,#{resourceTypeId},#{ss},1)
+ 	</insert>
+ 	<!-- 删除后缀表根据ID -->
+ 	<delete id="deleteRolePostfix">
+ 		delete from tb_resource_type_postfix where resource_type_id = #{id}
+ 	</delete>
+ 	<!-- 修改资源类型表 -->
+ 	<update id="updateResourceType" parameterType="sch.com.entity.ResourceYType">
+ 		update tb_resource_type set resource_type_name = #{resourceTypeName},resoutce_type_size = #{resourceTypeSize} where resource_type_id = #{resourceTypeId}
+ 	</update>
+ 	<!-- 禁用资源 类型-->
+ 	<update id="deleteResourceType">
+ 		update tb_resource_type set resource_type_status = 2 where resource_type_id = #{id}
+ 	</update>
+ 	<!-- 获取资源发布的资源信息 -->
+ 	<select id="getResourceInfo" resultType="map">
+ 		select * from tb_resource_upload where status_id = 3 
+ 	</select>
+ 	<!-- 获取资源下载排行信息 -->
+ 	<select id="getResourceCount" resultType="map">
+ 		select ru.*,r.downSum from tb_resource_upload ru,
+ 		(select resource_id,count(*) downSum from tb_resource_download 
+ 			group by resource_id order by downSum desc) r
+		where ru.resource_id = r.resource_id and ru.status_id=3
+ 	</select>
+ 	<!-- 获取资源积分排行信息 -->
+ 	<select id="getResourceScore" resultType="map">
+ 		select ru.*,r.scoreOrder from tb_resource_upload ru,
+ 		(select resourceId,round(sum(score)/count(score),2.1) scoreOrder from tb_score  group by resourceId) r
+		where ru.resource_id = r.resourceId and ru.status_id=3 order by scoreOrder desc
+ 	</select>
+ </mapper>

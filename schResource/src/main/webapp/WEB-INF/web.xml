@@ -1,18 +1,41 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
-
-<web-app>
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.4" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>Archetype Created Web Application</display-name>
-	<!-- 全局配置文件 -->
+	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring/spring-service.xml;classpath:spring/spring-dao.xml</param-value>
+		<param-value>classpath:spring/spring-*.xml</param-value>
 	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
+	 <filter>
+		<description>权限控制shiro配置</description>
+		<filter-name>shiroFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>shiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>UserFilter</filter-name>
+		<filter-class>sch.com.interceptors.UserFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>UserFilter</filter-name>
+		<url-pattern>/wym/myCenterQuery.do</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>UserFilter</filter-name>
+		<url-pattern>/jsp/fileupload.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>UserFilter</filter-name>
+		<url-pattern>/wym/infoInfo/*</url-pattern>
+	</filter-mapping>
+	
 	<servlet>
 		<servlet-name>seckill-dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -20,7 +43,7 @@
 			Mybatis - > spring -> springmvc -->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:spring/spring-mvc.xml</param-value>
+			<param-value>classpath:spring/spring-web.xml</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
